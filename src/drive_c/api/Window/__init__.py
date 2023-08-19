@@ -1,5 +1,6 @@
 import pygame
 
+
 class WindowNoDecorations:
     def __init__(self) -> None:
         pass
@@ -12,6 +13,7 @@ class WindowNoDecorations:
 
     def draw(self, output_surface) -> None:
         pass
+
 
 class Window(WindowNoDecorations):
     pass
