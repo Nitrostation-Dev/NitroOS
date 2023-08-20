@@ -1,17 +1,32 @@
 import pygame
 
+from src.drive_c.api.Window import Window, WindowNoDecorations
+
 class Desktop:
     def __init__(self, id: int, size: (int, int)) -> None:
         self.id = id
         self.surface = pygame.Surface(size)
 
+        self.windows = []
+
+    def gen_id(self) -> int:
+        return len(self.windows)
+
+    def add_window(self, window: WindowNoDecorations | Window) -> None:
+        self.windows.append(window)
+
     def events(self, event) -> None:
-        pass
+        for window in self.windows:
+            window.events(event)
 
     def update(self) -> None:
-        pass
+        for window in self.windows:
+            window.update()
 
     def draw(self, output_surface: pygame.Surface) -> None:
+        for window in self.windows:
+            window.draw(self.surface)
+
         output_surface.blit(self.surface, (0, 0))
 
 
