@@ -2,11 +2,11 @@ import pygame
 
 from src.drive_c.api.Desktop import Desktop
 from src.drive_c.NitroOS.login_screen.windows import LoginScreenDetails
-
+from src.drive_c.api.AssestManager import AssetManager
 
 class LoginDesktop(Desktop):
-    def __init__(self, id: int, size: (int, int)) -> None:
-        super().__init__(id, size)
+    def __init__(self, id: int, size: (int, int), assets: AssetManager) -> None:
+        super().__init__(id, size, assets)
 
         self.add_window(
             LoginScreenDetails(

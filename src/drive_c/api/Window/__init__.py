@@ -26,20 +26,16 @@ class WindowNoDecorations:
         pass
 
     def draw(self, output_surface: pygame.Surface) -> None:
-        self.surface.fill((0, 0, 0))
-
         output_surface.blit(self.surface, self.rect)
 
 
-class Window(WindowNoDecorations):
+class WindowNoDecorRounded(WindowNoDecorations):
     def __init__(self, id: int, **kargs) -> None:
         self.border_radius = 8
 
         super().__init__(id, **kargs)
 
     def draw(self, output_surface: pygame.Surface) -> None:
-        self.surface.fill((0, 0, 0))
-
         # Rounded Corners
         rect_image = pygame.Surface(self.surface.get_size(), pygame.SRCALPHA)
         pygame.draw.rect(
@@ -53,3 +49,8 @@ class Window(WindowNoDecorations):
         image.blit(rect_image, (0, 0), None, pygame.BLEND_RGBA_MIN)
 
         output_surface.blit(image, self.rect)
+
+
+class Window(WindowNoDecorRounded):
+    def __init__(self, id: int, **kargs) -> None:
+        super().__init__(id, **kargs)

@@ -4,7 +4,7 @@ class AssetManager:
 
         self.assets.update(kargs)
 
-    def add_key(self, name: str, value: any) -> None:
+    def add_asset(self, name: str, value: any) -> None:
         self.assets.update({name: value})
 
     def update_asset(self, dict) -> None:
