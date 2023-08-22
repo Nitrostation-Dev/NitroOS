@@ -8,13 +8,9 @@ class LoginDesktop(Desktop):
     def __init__(self, id: int, size: (int, int), assets: AssetManager) -> None:
         super().__init__(id, size, assets)
 
-        self.add_window(
-            LoginScreenDetails(
-                self.gen_id, title="Login Details", size=(300, 150), pos=(30, 30)
-            )
-        )
+        self.create_window(LoginScreenDetails, size=(500, 250))
 
     def draw(self, output_surface: pygame.Surface) -> None:
-        self.surface.fill((0, 255, 0))
+        self.surface.fill((0, 0, 0))
 
         return super().draw(output_surface)

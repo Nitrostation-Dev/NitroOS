@@ -1,13 +1,17 @@
 import pygame
 
+from src.drive_c.api.AssestManager import AssetManager
+
 
 class WindowNoDecorations:
-    def __init__(self, id: int, **kargs) -> None:
+    def __init__(self, id: int, assets: AssetManager, **kargs) -> None:
         self.name = "Undefined Title"
         self.id = id
 
         self.size = (600, 350)
         self.pos = (30, 30)
+
+        self.assets = assets
 
         self.__dict__.update(kargs)
 
@@ -30,10 +34,10 @@ class WindowNoDecorations:
 
 
 class WindowNoDecorRounded(WindowNoDecorations):
-    def __init__(self, id: int, **kargs) -> None:
+    def __init__(self, id: int, assets: AssetManager, **kargs) -> None:
         self.border_radius = 8
 
-        super().__init__(id, **kargs)
+        super().__init__(id, assets, **kargs)
 
     def draw(self, output_surface: pygame.Surface) -> None:
         # Rounded Corners
@@ -52,5 +56,4 @@ class WindowNoDecorRounded(WindowNoDecorations):
 
 
 class Window(WindowNoDecorRounded):
-    def __init__(self, id: int, **kargs) -> None:
-        super().__init__(id, **kargs)
+    pass

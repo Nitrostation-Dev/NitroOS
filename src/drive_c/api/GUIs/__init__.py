@@ -1,6 +1,12 @@
+from enum import Enum
 import pygame
 
 from src.drive_c.api.AssestManager import AssetManager
+
+class FontStyle(Enum):
+    REGULAR = 1
+    ITALIC = 2
+    BOLD = 3
 
 
 class GuiElement:
@@ -9,7 +15,7 @@ class GuiElement:
     ) -> None:
         self.name = name
         self.pos = pos
-        self.assest_manager = asset_manager
+        self.asset_manager = asset_manager
 
         self.__dict__.update(kargs)
 

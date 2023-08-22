@@ -44,6 +44,8 @@ class NitroOS:
             ),
         )
 
+        self.assets.add_asset("interface_text_fg_color", (0, 0, 0))
+
         # Desktop
         self.desktop_handler = DesktopHandler(self.assets)
         # self.desktop_handler.add_desktop(LoginDesktop(0, self.output_res))

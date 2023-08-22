@@ -1,7 +1,7 @@
 import pygame
 
 from src.drive_c.api.AssestManager import AssetManager
-from src.drive_c.api.Window import Window, WindowNoDecorations
+from src.drive_c.api.Window import Window, WindowNoDecorations, WindowNoDecorRounded
 
 
 class Desktop:
@@ -15,6 +15,13 @@ class Desktop:
 
     def gen_id(self) -> int:
         return len(self.windows)
+
+    def create_window(
+        self,
+        WindowClass: Window | WindowNoDecorations | WindowNoDecorRounded,
+        **window_args
+    ) -> None:
+        self.windows.append(WindowClass(len(self.windows), self.assets, **window_args))
 
     def add_window(self, window: WindowNoDecorations | Window) -> None:
         self.windows.append(window)
