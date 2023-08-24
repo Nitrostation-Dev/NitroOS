@@ -8,6 +8,11 @@ class FontStyle(Enum):
     ITALIC = 2
     BOLD = 3
 
+class PostitionType(Enum):
+    TOPLEFT = 1
+    MIDLEFT = 2
+    CENTER = 3
+
 
 class GuiElement:
     def __init__(
@@ -15,6 +20,7 @@ class GuiElement:
     ) -> None:
         self.name = name
         self.pos = pos
+        self.pos_type = PostitionType.TOPLEFT
         self.asset_manager = asset_manager
 
         self.__dict__.update(kargs)

@@ -1,6 +1,7 @@
 import pygame
 
 from src.drive_c.api.AssestManager import AssetManager
+from src.drive_c.api.Events import Event
 from src.drive_c.api.Window import Window, WindowNoDecorations, WindowNoDecorRounded
 
 
@@ -28,7 +29,18 @@ class Desktop:
 
     def events(self, event) -> None:
         for window in self.windows:
-            window.events(event)
+            mouse_pos_x, mouse_pos_y = pygame.mouse.get_pos()
+            
+            mouse_pos_x -= window.rect.x
+            mouse_pos_y -= window.rect.y
+
+            if (mouse_pos_x < 0):
+                mouse_pos_x = 0
+
+            if (mouse_pos_y < 0):
+                mouse_pos_y = 0
+
+            window.events(Event(event, (mouse_pos_x, mouse_pos_y)))
 
     def update(self) -> None:
         for window in self.windows:

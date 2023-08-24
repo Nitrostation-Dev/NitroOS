@@ -22,29 +22,33 @@ class NitroOS:
         self.assets.add_asset("monitor_size", self.output_res)
 
         interface_font_size = 20
-        self.assets.add_asset("interface_font_size", interface_font_size)
-
-        # Interface Fonts
-        self.assets.add_asset(
-            "interface_font_family_regular",
-            pygame.font.Font(
-                "src/drive_c/assets/fonts/Ubuntu-Regular.ttf", interface_font_size
-            ),
+        input_field_padding = 2
+        input_field_border_size = 3
+        self.assets.update_asset(
+            {
+                "monitor_size": self.output_res,
+                "fps": self.output_fps,
+                "interface_font_size": 20,
+                "interface_font_family_regular": pygame.font.Font(
+                    "src/drive_c/assets/fonts/Ubuntu-Regular.ttf", interface_font_size
+                ),
+                "interface_font_family_italic": pygame.font.Font(
+                    "src/drive_c/assets/fonts/Ubuntu-Italic.ttf", interface_font_size
+                ),
+                "interface_font_family_bold": pygame.font.Font(
+                    "src/drive_c/assets/fonts/Ubuntu-Bold.ttf", interface_font_size
+                ),
+                "interface_text_fg_color": (0, 0, 0),
+                # Gui Elements Assets
+                "input_field_border_size": input_field_border_size,
+                "input_field_size": (
+                    300 + input_field_padding + (2 * input_field_border_size),
+                    interface_font_size
+                    + (2 * input_field_padding)
+                    + (2 * input_field_border_size),
+                ),
+            }
         )
-        self.assets.add_asset(
-            "interface_font_family_bold",
-            pygame.font.Font(
-                "src/drive_c/assets/fonts/Ubuntu-Bold.ttf", interface_font_size
-            ),
-        )
-        self.assets.add_asset(
-            "interface_font_family_italic",
-            pygame.font.Font(
-                "src/drive_c/assets/fonts/Ubuntu-Italic.ttf", interface_font_size
-            ),
-        )
-
-        self.assets.add_asset("interface_text_fg_color", (0, 0, 0))
 
         # Desktop
         self.desktop_handler = DesktopHandler(self.assets)
@@ -59,8 +63,10 @@ class NitroOS:
                 pygame.quit()
                 sys.exit(0)
 
+            self.desktop_handler.events(event)
+
     def update(self) -> None:
-        pass
+        self.desktop_handler.update()
 
     def draw(self) -> None:
         self.desktop_handler.draw(self.monitor.output_surface)
