@@ -14,12 +14,10 @@ class NitroOS:
         self.output_fps = 60
 
         self.clock = pygame.time.Clock()
-
         self.monitor = Monitor(self.output_res, 60)
+
         # Assets
         self.assets = AssetManager()
-
-        self.assets.add_asset("monitor_size", self.output_res)
 
         interface_font_size = 20
         input_field_padding = 2
@@ -52,7 +50,6 @@ class NitroOS:
 
         # Desktop
         self.desktop_handler = DesktopHandler(self.assets)
-        # self.desktop_handler.add_desktop(LoginDesktop(0, self.output_res))
         self.desktop_handler.create_desktop(LoginDesktop)
 
         self.running = True

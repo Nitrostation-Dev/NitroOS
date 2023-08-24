@@ -1,7 +1,7 @@
 import pygame
 
 from src.drive_c.api.AssestManager import AssetManager
-from src.drive_c.api.GUIs import GuiElement, FontStyle, PostitionType
+from src.drive_c.api.GUIs import GuiElement, FontStyle, PositionType
 
 
 class GuiElementLabel(GuiElement):
@@ -38,13 +38,13 @@ class GuiElementLabel(GuiElement):
             )
 
         self.surface = self.font_family.render(message, True, self.fg_color)
-        if self.pos_type == PostitionType.TOPLEFT:
+        if self.pos_type == PositionType.TOPLEFT:
             self.rect = self.surface.get_rect(topleft=pos)
 
-        elif self.pos_type == PostitionType.MIDLEFT:
+        elif self.pos_type == PositionType.MIDLEFT:
             self.rect = self.surface.get_rect(midleft=pos)
 
-        elif self.pos_type == PostitionType.CENTER:
+        elif self.pos_type == PositionType.CENTER:
             self.rect = self.surface.get_rect(center=pos)
 
     def update_message(self, message: str) -> None:

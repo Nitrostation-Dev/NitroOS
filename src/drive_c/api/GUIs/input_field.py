@@ -1,7 +1,7 @@
 import pygame
 from src.drive_c.api.AssestManager import AssetManager
 from src.drive_c.api.Events import Event
-from src.drive_c.api.GUIs import FontStyle, GuiElement, PostitionType
+from src.drive_c.api.GUIs import FontStyle, GuiElement, PositionType
 
 
 class GuiElementInputField(GuiElement):
@@ -54,7 +54,7 @@ class GuiElementInputField(GuiElement):
             self.font_size + (2 * self.padding) + (2 * self.border_size),
         )
         self.surface = pygame.Surface(size)
-        if self.pos_type == PostitionType.TOPLEFT:
+        if self.pos_type == PositionType.TOPLEFT:
             self.border_rect = pygame.Rect(self.pos[0], self.pos[1], size[0], size[1])
             self.background_rect = pygame.Rect(
                 self.pos[0] + self.border_size,
@@ -63,7 +63,7 @@ class GuiElementInputField(GuiElement):
                 size[1] - (2 * self.border_size),
             )
 
-        elif self.pos_type == PostitionType.MIDLEFT:
+        elif self.pos_type == PositionType.MIDLEFT:
             self.border_rect = pygame.Rect(
                 self.pos[0], self.pos[1] - int(size[1] / 2), size[0], size[1]
             )
@@ -74,7 +74,7 @@ class GuiElementInputField(GuiElement):
                 size[1] - (2 * self.border_size),
             )
 
-        elif self.pos_type == PostitionType.CENTER:
+        elif self.pos_type == PositionType.CENTER:
             self.border_rect = pygame.Rect(
                 self.pos[0] - int(size[0] / 2),
                 self.pos[1] - int(size[1] / 2),
@@ -89,7 +89,7 @@ class GuiElementInputField(GuiElement):
             )
 
         self.placehold_text_surface = self.font_family.render(
-            self.message, True, (100, 100, 100)
+            self.message, True, self.placehold_text_color
         )
         self.placehold_text_rect = self.placehold_text_surface.get_rect(
             midleft=(
