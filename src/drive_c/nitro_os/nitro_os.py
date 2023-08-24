@@ -4,7 +4,7 @@ import pygame
 from src.drive_c.api.Monitor import Monitor
 from src.drive_c.api.Desktop import DesktopHandler
 from src.drive_c.api.AssestManager import AssetManager
-from src.drive_c.NitroOS.login_screen import LoginDesktop
+from src.drive_c.nitro_os.login_screen import LoginDesktop
 
 
 class NitroOS:
