@@ -6,13 +6,14 @@ from src.drive_c.api.Window import Window, WindowNoDecorations, WindowNoDecorRou
 
 
 class Desktop:
-    def __init__(self, id: int, size: (int, int), assets: AssetManager) -> None:
+    def __init__(
+        self, id: int, size: (int, int), assets: AssetManager
+    ) -> None:
         self.id = id
         self.surface = pygame.Surface(size)
+        self.assets = assets
 
         self.windows = []
-
-        self.assets = assets
 
     def gen_id(self) -> int:
         return len(self.windows)
@@ -30,14 +31,14 @@ class Desktop:
     def events(self, event) -> None:
         for window in self.windows:
             mouse_pos_x, mouse_pos_y = pygame.mouse.get_pos()
-            
+
             mouse_pos_x -= window.rect.x
             mouse_pos_y -= window.rect.y
 
-            if (mouse_pos_x < 0):
+            if mouse_pos_x < 0:
                 mouse_pos_x = 0
 
-            if (mouse_pos_y < 0):
+            if mouse_pos_y < 0:
                 mouse_pos_y = 0
 
             window.events(Event(event, (mouse_pos_x, mouse_pos_y)))
@@ -63,9 +64,14 @@ class DesktopHandler:
     def create_desktop(self, DesktopClass: Desktop):
         self.desktops.append(
             DesktopClass(
-                len(self.desktops), self.assets.get_asset("monitor_size"), self.assets
+                len(self.desktops),
+                self.assets.get_asset("monitor_size"),
+                self.assets,
             )
         )
+
+    def add_desktop(self, desktop: Desktop):
+        self.desktops.append(desktop)
 
     def change_to_desktop(self, id: str) -> None:
         for i in range(len(self.desktops)):

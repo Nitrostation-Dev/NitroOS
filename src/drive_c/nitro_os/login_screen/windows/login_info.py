@@ -13,6 +13,8 @@ from src.drive_c.nitro_os.encryption import decrypt_str
 
 class LoginScreenDetails(WindowNoDecorRounded):
     def __init__(self, id: int, assets: AssetManager, **kargs) -> None:
+        self.desktop_handler = None
+
         super().__init__(id, assets, **kargs)
 
         # Labels
@@ -65,6 +67,9 @@ class LoginScreenDetails(WindowNoDecorRounded):
             pos_type=PositionType.MIDLEFT,
         )
 
+        # Wallpaper
+        self.wallpaper = self.assets.get_asset("login_wallpaper")
+
     def login(self):
         login_details = self.assets.get_asset("login_details")
         input_username = self.username_field.input_text
@@ -75,10 +80,10 @@ class LoginScreenDetails(WindowNoDecorRounded):
                 continue
 
             if decrypt_str(login_detail["key"], login_detail["pass"]) != input_password:
-                print("SADGE")
+                pass
 
             else:
-                print("YAY")
+                self.desktop_handler.change_to_desktop(1)
 
     def events(self, event) -> None:
         self.username_field.events(event)
@@ -87,7 +92,9 @@ class LoginScreenDetails(WindowNoDecorRounded):
         self.login_button.events(event)
 
     def draw(self, output_surface: pygame.Surface) -> None:
-        self.surface.fill((220, 220, 220))
+        self.surface.fill((250, 250, 250))
+
+        output_surface.blit(self.wallpaper, (0, 0))
 
         self.title_label.draw(self.surface)
         self.username_label.draw(self.surface)

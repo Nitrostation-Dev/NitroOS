@@ -1,7 +1,6 @@
 import sys
 import os
 import pygame
-from src.drive_c.api import Desktop
 
 from src.drive_c.api.Monitor import Monitor
 from src.drive_c.api.Desktop import DesktopHandler
@@ -9,6 +8,7 @@ from src.drive_c.api.AssestManager import AssetManager
 
 from src.drive_c.nitro_os.read_json import get_json_data
 from src.drive_c.nitro_os.login_screen import LoginDesktop
+from src.drive_c.nitro_os.desktop import NitroDesktop
 
 
 class NitroOS:
@@ -33,8 +33,6 @@ class NitroOS:
         self.assets = AssetManager()
 
         interface_font_size = 20
-        input_field_padding = 2
-        input_field_border_size = 3
         self.assets.update_asset(
             {
                 "monitor_size": self.output_res,
@@ -51,20 +49,27 @@ class NitroOS:
                     "src/drive_c/assets/fonts/Ubuntu-Bold.ttf", interface_font_size
                 ),
                 "interface_text_fg_color": (0, 0, 0),
-                # Gui Elements Assets
-                "input_field_border_size": input_field_border_size,
-                "input_field_size": (
-                    300 + input_field_padding + (2 * input_field_border_size),
-                    interface_font_size
-                    + (2 * input_field_padding)
-                    + (2 * input_field_border_size),
+                "login_wallpaper": pygame.transform.scale(
+                    pygame.image.load(
+                        "src/drive_c/assets/wallpapers/unsplash-login.jpg"
+                    ),
+                    self.output_res,
+                ),
+                "desktop_wallpaper": pygame.transform.scale(
+                    pygame.image.load(
+                        "src/drive_c/assets/wallpapers/unsplash-desktop.jpg"
+                    ),
+                    self.output_res,
                 ),
             }
         )
 
         # Desktops
         self.desktop_handler = DesktopHandler(self.assets)
-        self.desktop_handler.create_desktop(LoginDesktop)
+        self.desktop_handler.add_desktop(
+            LoginDesktop(0, self.output_res, self.assets, self.desktop_handler)
+        )
+        self.desktop_handler.create_desktop(NitroDesktop)
 
         self.running = True
 
