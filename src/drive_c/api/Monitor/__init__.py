@@ -1,10 +1,9 @@
 import pygame
 
 class Monitor:
-    def __init__(self, resolution, fps) -> None:
+    def __init__(self, resolution) -> None:
         self.name = "Monitor"
         self.resolution = resolution
-        self.fps = fps
 
         pygame.display.set_caption(self.name)
         self.output_surface = pygame.display.set_mode(resolution)

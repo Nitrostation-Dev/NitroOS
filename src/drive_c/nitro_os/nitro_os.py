@@ -1,9 +1,13 @@
 import sys
+import os
 import pygame
+from src.drive_c.api import Desktop
 
 from src.drive_c.api.Monitor import Monitor
 from src.drive_c.api.Desktop import DesktopHandler
 from src.drive_c.api.AssestManager import AssetManager
+
+from src.drive_c.nitro_os.read_json import get_json_data
 from src.drive_c.nitro_os.login_screen import LoginDesktop
 
 
@@ -12,9 +16,18 @@ class NitroOS:
         # Monitor
         self.output_res = (1600, 900)
         self.output_fps = 60
-
+        self.monitor = Monitor(self.output_res)
         self.clock = pygame.time.Clock()
-        self.monitor = Monitor(self.output_res, 60)
+
+        # Get All User Logins Data
+        login_details = []
+
+        user_folders = os.listdir("src/drive_c/users/")
+        for folder in user_folders:
+            user_data = get_json_data(
+                "src/drive_c/users/" + folder + "/data/login_details.json"
+            )
+            login_details.append(user_data)
 
         # Assets
         self.assets = AssetManager()
@@ -26,6 +39,7 @@ class NitroOS:
             {
                 "monitor_size": self.output_res,
                 "fps": self.output_fps,
+                "login_details": login_details,
                 "interface_font_size": 20,
                 "interface_font_family_regular": pygame.font.Font(
                     "src/drive_c/assets/fonts/Ubuntu-Regular.ttf", interface_font_size
@@ -48,7 +62,7 @@ class NitroOS:
             }
         )
 
-        # Desktop
+        # Desktops
         self.desktop_handler = DesktopHandler(self.assets)
         self.desktop_handler.create_desktop(LoginDesktop)
 
