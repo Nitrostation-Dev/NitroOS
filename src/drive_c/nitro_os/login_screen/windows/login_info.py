@@ -13,9 +13,12 @@ from src.drive_c.nitro_os.encryption import decrypt_str
 
 class LoginScreenDetails(WindowNoDecorRounded):
     def __init__(self, id: int, assets: AssetManager, **kargs) -> None:
+        super().__init__(id, assets, size=(480, 200))
+
         self.desktop_handler = None
 
-        super().__init__(id, assets, **kargs)
+        self.__dict__.update(kargs)
+
 
         # Labels
         self.title_label = GuiElementLabel(
@@ -60,11 +63,11 @@ class LoginScreenDetails(WindowNoDecorRounded):
         # Buttons
         self.login_button = GuiElementButton(
             "login_button",
-            (150, 150),
+            (self.rect.width / 2, 165),
             self.assets,
             "Login",
             self.login,
-            pos_type=PositionType.MIDLEFT,
+            pos_type=PositionType.CENTER,
         )
 
         # Wallpaper
@@ -80,7 +83,7 @@ class LoginScreenDetails(WindowNoDecorRounded):
                 continue
 
             if decrypt_str(login_detail["key"], login_detail["pass"]) != input_password:
-                pass
+                pass # TODO: Implement Small message that says login failed
 
             else:
                 self.desktop_handler.change_to_desktop(1)
