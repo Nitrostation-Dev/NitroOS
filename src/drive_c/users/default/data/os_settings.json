@@ -1,0 +1,8 @@
+{
+    "wallpaper": "src/drive_c/assets/wallpapers/unsplash-desktop.jpg",
+
+    "interface_font_size": 20,
+    "interface_font_family_regular": "src/drive_c/assets/fonts/Ubuntu-Regular.ttf",
+    "interface_font_family_italic": "src/drive_c/assets/fonts/Ubuntu-Italic.ttf",
+    "interface_font_family_bold": "src/drive_c/assets/fonts/Ubuntu-Bold.ttf"
+}

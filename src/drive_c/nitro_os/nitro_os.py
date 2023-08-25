@@ -1,5 +1,7 @@
+from pprint import pprint
 import sys
 import os
+from uu import Error
 import pygame
 
 from src.drive_c.api.Monitor import Monitor
@@ -31,6 +33,7 @@ class NitroOS:
 
         # Assets
         self.assets = AssetManager()
+        self.user_assets = AssetManager()
 
         interface_font_size = 20
         self.assets.update_asset(
@@ -65,13 +68,51 @@ class NitroOS:
         )
 
         # Desktops
-        self.desktop_handler = DesktopHandler(self.assets)
+        self.desktop_handler = DesktopHandler()
         self.desktop_handler.add_desktop(
-            LoginDesktop(0, self.output_res, self.assets, self.desktop_handler)
+            LoginDesktop(
+                0,
+                self.output_res,
+                self.assets,
+                self.update_current_user,
+            )
         )
-        self.desktop_handler.create_desktop(NitroDesktop)
 
         self.running = True
+
+    def update_current_user(self, username: str) -> None:
+        for login_data in self.assets.get_asset("login_details"):
+            if login_data["username"] != username:
+                continue
+
+            # UserAssets
+            del self.user_assets
+            self.user_assets = AssetManager()
+            self.user_assets.update_asset(
+                get_json_data(
+                    "src/drive_c/users/"
+                    + login_data["username"]
+                    + "/data/os_settings.json"
+                )
+            )
+            self.user_assets.update_asset({"login_data": login_data})
+            self.user_assets.update_asset(
+                {
+                    "wallpaper": pygame.transform.scale(
+                        pygame.image.load(self.user_assets.get_asset("wallpaper")),
+                        self.output_res,
+                    )
+                }
+            )
+
+            self.desktop_handler.add_desktop(
+                NitroDesktop(1, self.output_res, self.assets, self.user_assets)
+            )
+            self.desktop_handler.change_to_desktop(1)
+
+            return
+
+        raise Error("ERRR! No user")
 
     def events(self) -> None:
         for event in pygame.event.get():

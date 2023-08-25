@@ -6,9 +6,7 @@ from src.drive_c.api.Window import Window, WindowNoDecorations, WindowNoDecorRou
 
 
 class Desktop:
-    def __init__(
-        self, id: int, size: (int, int), assets: AssetManager
-    ) -> None:
+    def __init__(self, id: int, size: (int, int), assets: AssetManager) -> None:
         self.id = id
         self.surface = pygame.Surface(size)
         self.assets = assets
@@ -55,20 +53,9 @@ class Desktop:
 
 
 class DesktopHandler:
-    def __init__(self, assets: AssetManager) -> None:
+    def __init__(self) -> None:
         self.desktops = []
         self.active_desktop_index = 0
-
-        self.assets = assets
-
-    def create_desktop(self, DesktopClass: Desktop):
-        self.desktops.append(
-            DesktopClass(
-                len(self.desktops),
-                self.assets.get_asset("monitor_size"),
-                self.assets,
-            )
-        )
 
     def add_desktop(self, desktop: Desktop):
         self.desktops.append(desktop)
