@@ -1,7 +1,5 @@
-from pprint import pprint
 import sys
 import os
-from uu import Error
 import pygame
 
 from src.drive_c.api.Monitor import Monitor
@@ -10,7 +8,7 @@ from src.drive_c.api.AssestManager import AssetManager
 
 from src.drive_c.nitro_os.read_json import get_json_data
 from src.drive_c.nitro_os.login_screen import LoginDesktop
-from src.drive_c.nitro_os.desktop import NitroDesktop
+from src.drive_c.nitro_os.nitro_desktop import NitroDesktop
 
 
 class NitroOS:
@@ -112,7 +110,7 @@ class NitroOS:
 
             return
 
-        raise Error("ERRR! No user")
+        raise ValueError("NO USER!")
 
     def events(self) -> None:
         for event in pygame.event.get():
