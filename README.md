@@ -15,7 +15,7 @@ Required python modules
 These modules can be installed using pip
 - **Windows**: `pip install pygame cryptography`
 - **Linux**: Since Linux requires you to install dependicies system-wide, it depends on the distro's package manager used. But here are some common distro commands:
-    - Arch: `apt-get install python-pygame python-cryptography`
+    - Arch: `pacman -S install python-pygame python-cryptography`
 
 For more information, see the Install.md file.
 
