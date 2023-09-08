@@ -54,6 +54,7 @@ class LoginScreenDetails(WindowNoDecorRounded):
             (150, 70),
             self.assets,
             "username",
+            input_text="default" ,
             pos_type=PositionType.MIDLEFT,
         )
         self.password_field = GuiElementInputField(
@@ -61,6 +62,7 @@ class LoginScreenDetails(WindowNoDecorRounded):
             (150, 110),
             self.assets,
             "password",
+            is_active=True,
             pos_type=PositionType.MIDLEFT,
             is_pass=True,
         )

@@ -19,6 +19,7 @@ class LoginDesktop(Desktop):
             LoginScreenDetails,
             size=(500, 250),
             change_user_func=change_user_func,
+            
         )
 
     def draw(self, output_surface: pygame.Surface) -> None:

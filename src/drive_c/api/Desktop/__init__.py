@@ -13,6 +13,10 @@ class Desktop:
 
         self.windows = []
 
+    def final_init(self) -> None:
+        for window in self.windows:
+            window.final_init()
+
     def gen_id(self) -> int:
         return len(self.windows)
 
@@ -56,6 +60,10 @@ class DesktopHandler:
     def __init__(self) -> None:
         self.desktops = []
         self.active_desktop_index = 0
+
+    def final_init(self) -> None:
+        for desktop in self.desktops:
+            desktop.final_init()
 
     def add_desktop(self, desktop: Desktop):
         self.desktops.append(desktop)

@@ -7,19 +7,17 @@ class WindowNoDecorations:
     def __init__(self, id: int, assets: AssetManager, **kargs) -> None:
         self.name = "Undefined Title"
         self.id = id
+        self.assets = assets
 
         self.size = (600, 350)
         self.pos = (30, 30)
-
-        self.assets = assets
 
         self.__dict__.update(kargs)
 
         self.surface = pygame.Surface(self.size)
         self.rect = self.surface.get_rect(topleft=self.pos)
 
-        # Rounded Corners functionalitiy
-
+    def final_init(self) -> None:
         del self.size
         del self.pos
 

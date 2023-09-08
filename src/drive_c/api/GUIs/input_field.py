@@ -28,12 +28,17 @@ class GuiElementInputField(GuiElement):
         self.border_color = (75, 75, 75)
         self.background_color = (200, 200, 200)
 
+        # Horizontal Size
         self.size_x = 300
 
+        # Misc Settings
+        self.is_active = False
         self.is_pass = False
+        self.input_text = ""
 
         super().__init__(name, pos, asset_manager, **kargs)
 
+        # Handling Different Font Style
         if self.font_style == FontStyle.REGULAR:
             self.font_family = self.asset_manager.get_asset(
                 "interface_font_family_regular"
@@ -49,6 +54,7 @@ class GuiElementInputField(GuiElement):
                 "interface_font_family_bold"
             )
 
+        # Handle Position
         size = (
             self.size_x + (2 * self.border_size) + (2 * self.padding),
             self.font_size + (2 * self.padding) + (2 * self.border_size),
@@ -88,6 +94,7 @@ class GuiElementInputField(GuiElement):
                 size[1] - (2 * self.border_size),
             )
 
+        # Decorate Input Field
         self.placehold_text_surface = self.font_family.render(
             self.message, True, self.placehold_text_color
         )
@@ -98,8 +105,6 @@ class GuiElementInputField(GuiElement):
             )
         )
 
-        self.is_active = False
-        self.input_text = ""
         self.input_text_surface = self.font_family.render(
             self.input_text, True, self.fg_color
         )

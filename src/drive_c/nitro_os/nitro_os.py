@@ -62,6 +62,10 @@ class NitroOS:
                     ),
                     self.output_res,
                 ),
+                "taskbar_height": 40,
+                "taskbar_border_radius": 8,
+                "taskbar_margin": (6, 6),
+                "taskbar_bg_color": (100, 100, 235),
             }
         )
 
@@ -77,6 +81,9 @@ class NitroOS:
         )
 
         self.running = True
+
+    def final_init(self) -> None:
+        self.desktop_handler.final_init()
 
     def update_current_user(self, username: str) -> None:
         for login_data in self.assets.get_asset("login_details"):
@@ -130,6 +137,8 @@ class NitroOS:
         self.clock.tick(self.output_fps)
 
     def loop(self) -> None:
+        self.final_init()
+
         while self.running:
             self.events()
             self.update()
