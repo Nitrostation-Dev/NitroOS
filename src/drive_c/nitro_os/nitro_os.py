@@ -9,6 +9,7 @@ from src.drive_c.api.AssestManager import AssetManager
 
 from src.drive_c.nitro_os.read_json import get_json_data
 from src.drive_c.nitro_os.desktops import LoginDesktop, NitroDesktop
+from src.drive_c.nitro_os.applications import appsData
 
 
 class NitroOS:
@@ -40,11 +41,29 @@ class NitroOS:
 
             login_details.append(user_data)
 
+        # Applications
+        # System-Wide Applications
+        self.system_apps_data = appsData
+
+        # Icon Themes
+        self.icons = {
+            "applications": {},
+        }
+        app_icons = os.listdir(
+            "src/drive_c/assets/icons/default_icon_pack/applications"
+        )
+        for icon in app_icons:
+            self.icons["applications"][icon.split(".")[0]] = pygame.image.load(
+                "src/drive_c/assets/icons/default_icon_pack/applications/" + icon
+            ).convert_alpha()
+
         # Assets
         self.assets = AssetManager()
         self.user_assets = AssetManager()
 
         interface_font_size = 20
+        desktop_wallpaper = pygame.Surface(self.output_res)
+        desktop_wallpaper.fill((100, 100, 100))
         self.assets.update_assets(
             {
                 "monitor_size": self.output_res,
@@ -67,19 +86,21 @@ class NitroOS:
                     ),
                     self.output_res,
                 ),
-                "desktop_wallpaper": pygame.transform.scale(
-                    pygame.image.load(
-                        "src/drive_c/assets/wallpapers/unsplash-desktop.jpg"
-                    ),
-                    self.output_res,
-                ),
+                "desktop_wallpaper": desktop_wallpaper,
                 "taskbar_height": 40,
                 "taskbar_border_radius": 8,
-                "taskbar_margin": (6, 6),
-                "taskbar_bg_color": (100, 100, 235),
+                "taskbar_margin": (2, 2),
+                "taskbar_bg_color": (180, 180, 235),
+                "taskbar_transparency": 225,
+                "apps": self.system_apps_data,
+                "launch_app": self.launch_app,
+                "icons": self.icons,
+                "get_icon": self.get_icon_for_app,
             }
         )
         self.user_assets.update_assets(self.assets.get_assets())
+
+        self.get_icon_for_app("files")
 
         # Desktops
         self.desktop_handler = DesktopHandler()
@@ -91,6 +112,18 @@ class NitroOS:
                 self.update_current_user,
             )
         )
+
+    def get_icon_for_app(self, name: str) -> pygame.Surface:
+        for icon in self.icons["applications"]:
+            if icon != name:
+                continue
+
+            return self.icons["applications"][icon]
+
+    def launch_app(self, app_class) -> None:
+        self.desktop_handler.desktops[1].create_window(
+            app_class
+        )  # TODO: Implement Better App Launch System
 
     def final_init(self) -> None:
         self.desktop_handler.final_init()
