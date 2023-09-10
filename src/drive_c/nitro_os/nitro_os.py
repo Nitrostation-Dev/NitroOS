@@ -34,7 +34,7 @@ class NitroOS:
                 self.running = False
                 print(
                     'Error reading "{0}"'.format(
-                        "src/drive_c/users/" + folder + "/data/login_details.json"
+                        "src/drive_c/users/" + folder + "/data/login_details.jsonc"
                     )
                 )
 

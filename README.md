@@ -32,3 +32,6 @@ Now you can run the application using this command:
 `python main.py`
 (or)
 `python3 main.py` (if you are in linux)
+
+## How to Use It
+First when you run NitroOS, it will show you the lock screen with the username "default". Login to the "default" user with the password "pass1234".
