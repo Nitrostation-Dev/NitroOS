@@ -7,7 +7,7 @@ class AssetManager:
     def add_asset(self, name: str, value: any) -> None:
         self.assets.update({name: value})
 
-    def update_asset(self, dict) -> None:
+    def update_assets(self, dict) -> None:
         self.assets.update(dict)
 
     def get_assets(self) -> any:

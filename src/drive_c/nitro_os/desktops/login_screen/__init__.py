@@ -1,7 +1,9 @@
 import pygame
 
 from src.drive_c.api.Desktop import Desktop
-from src.drive_c.nitro_os.login_screen.windows.login_info import LoginScreenDetails
+from src.drive_c.nitro_os.desktops.login_screen.windows import (
+    LoginScreenDetails,
+)
 from src.drive_c.api.AssestManager import AssetManager
 
 
@@ -19,7 +21,6 @@ class LoginDesktop(Desktop):
             LoginScreenDetails,
             size=(500, 250),
             change_user_func=change_user_func,
-            
         )
 
     def draw(self, output_surface: pygame.Surface) -> None:

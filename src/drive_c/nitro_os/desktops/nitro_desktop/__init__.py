@@ -2,18 +2,16 @@ import pygame
 from src.drive_c.api.AssestManager import AssetManager
 from src.drive_c.api.Desktop import Desktop
 
-from src.drive_c.nitro_os.nitro_desktop.gui import Taskbar
+from src.drive_c.nitro_os.desktops.nitro_desktop.gui import Taskbar
 
 
 class NitroDesktop(Desktop):
     def __init__(
-        self, id: int, size: (int, int), assets: AssetManager, user_assets: AssetManager
+        self, id: int, size: (int, int), assets: AssetManager
     ) -> None:
         super().__init__(id, size, assets)
 
-        self.user_assets = user_assets
-
-        self.wallpaper = self.user_assets.get_asset("wallpaper")
+        self.wallpaper = self.assets.get_asset("wallpaper")
         self.taskbar = Taskbar(0, self.assets)
 
     def events(self, event) -> None:

@@ -1,3 +1,4 @@
+from json import JSONDecodeError
 import sys
 import os
 import pygame
@@ -7,12 +8,13 @@ from src.drive_c.api.Desktop import DesktopHandler
 from src.drive_c.api.AssestManager import AssetManager
 
 from src.drive_c.nitro_os.read_json import get_json_data
-from src.drive_c.nitro_os.login_screen import LoginDesktop
-from src.drive_c.nitro_os.nitro_desktop import NitroDesktop
+from src.drive_c.nitro_os.desktops import LoginDesktop, NitroDesktop
 
 
 class NitroOS:
     def __init__(self) -> None:
+        self.running = True
+
         # Monitor
         self.output_res = (1600, 900)
         self.output_fps = 60
@@ -24,9 +26,18 @@ class NitroOS:
 
         user_folders = os.listdir("src/drive_c/users/")
         for folder in user_folders:
-            user_data = get_json_data(
-                "src/drive_c/users/" + folder + "/data/login_details.json"
-            )
+            try:
+                user_data = get_json_data(
+                    "src/drive_c/users/" + folder + "/data/login_details.json"
+                )
+            except JSONDecodeError:
+                self.running = False
+                print(
+                    'Error reading "{0}"'.format(
+                        "src/drive_c/users/" + folder + "/data/login_details.json"
+                    )
+                )
+
             login_details.append(user_data)
 
         # Assets
@@ -34,7 +45,7 @@ class NitroOS:
         self.user_assets = AssetManager()
 
         interface_font_size = 20
-        self.assets.update_asset(
+        self.assets.update_assets(
             {
                 "monitor_size": self.output_res,
                 "fps": self.output_fps,
@@ -68,6 +79,7 @@ class NitroOS:
                 "taskbar_bg_color": (100, 100, 235),
             }
         )
+        self.user_assets.update_assets(self.assets.get_assets())
 
         # Desktops
         self.desktop_handler = DesktopHandler()
@@ -80,8 +92,6 @@ class NitroOS:
             )
         )
 
-        self.running = True
-
     def final_init(self) -> None:
         self.desktop_handler.final_init()
 
@@ -91,17 +101,17 @@ class NitroOS:
                 continue
 
             # UserAssets
-            del self.user_assets
-            self.user_assets = AssetManager()
-            self.user_assets.update_asset(
+            self.user_assets.update_assets(self.assets.get_assets())
+
+            self.user_assets.update_assets(
                 get_json_data(
                     "src/drive_c/users/"
                     + login_data["username"]
                     + "/data/os_settings.json"
                 )
             )
-            self.user_assets.update_asset({"login_data": login_data})
-            self.user_assets.update_asset(
+            self.user_assets.update_assets({"login_data": login_data})
+            self.user_assets.update_assets(
                 {
                     "wallpaper": pygame.transform.scale(
                         pygame.image.load(self.user_assets.get_asset("wallpaper")),
@@ -111,7 +121,7 @@ class NitroOS:
             )
 
             self.desktop_handler.add_desktop(
-                NitroDesktop(1, self.output_res, self.assets, self.user_assets)
+                NitroDesktop(1, self.output_res, self.user_assets)
             )
             self.desktop_handler.change_to_desktop(1)
 
