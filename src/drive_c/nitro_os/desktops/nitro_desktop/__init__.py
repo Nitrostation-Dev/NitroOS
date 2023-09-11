@@ -19,10 +19,10 @@ class NitroDesktop(Desktop):
 
         return super().events(event)
     
-    def update(self) -> None:
-        self.taskbar.update()
+    def update(self, delta: float) -> None:
+        self.taskbar.update(delta)
 
-        return super().update()
+        return super().update(delta)
 
     def draw(self, output_surface: pygame.Surface) -> None:
         self.surface.blit(self.wallpaper, (0, 0))

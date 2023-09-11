@@ -1,6 +1,12 @@
 import pygame
+from enum import Enum
 
 from src.drive_c.api.AssestManager import AssetManager
+
+
+class WindowAnimation(Enum):
+    OPENING = 1
+    CLOSING = 2
 
 
 class WindowNoDecorations:
@@ -17,14 +23,61 @@ class WindowNoDecorations:
         self.surface = pygame.Surface(self.size)
         self.rect = self.surface.get_rect(topleft=self.pos)
 
+        # Animation Variables
+        self.animation = WindowAnimation.OPENING
+        self.should_animate = False
+        self.is_animating = False
+
     def final_init(self) -> None:
-        del self.size
-        del self.pos
+        # del self.size
+        # del self.pos
+        pass
+
+    def animate_opening(self, delta: float, init_v: float = 7500) -> None:
+        if self.should_animate:
+            self.is_animating = True
+            self.should_animate = False
+
+            # Animate 'Ease Out' From Bottom to Top
+            self.final_pos_y = self.rect.y
+            self.rect.y = self.assets.get_asset("monitor_size")[1]
+            self.init_distance = -(self.final_pos_y - self.rect.y)
+            self.initial_velocity = init_v
+            self.animation_velocity = self.initial_velocity
+
+        if self.is_animating:
+            if self.rect.y > self.final_pos_y:
+                self.animation_velocity = (
+                    self.initial_velocity
+                    * (-(self.final_pos_y - self.rect.y) / self.init_distance)
+                    * delta
+                )
+                self.animation_velocity = (
+                    1.0 if self.animation_velocity < 1.0 else self.animation_velocity
+                )
+
+                self.rect.y -= self.animation_velocity
+                self.rect.y = (
+                    self.final_pos_y if self.rect.y <= self.final_pos_y else self.rect.y
+                )
+
+            else:
+                self.should_animate = False
+                self.is_animating = False
+
+    def handle_animations(self, delta: float) -> None:
+        if not self.should_animate and not self.is_animating:
+            return
+
+        if self.animation == WindowAnimation.OPENING:
+            self.animate_opening(
+                delta, self.assets.get_asset("window_opening_initial_velocity")
+            )
 
     def events(self, event) -> None:
         pass
 
-    def update(self) -> None:
+    def update(self, delta: float) -> None:
         pass
 
     def draw(self, output_surface: pygame.Surface) -> None:
@@ -54,4 +107,12 @@ class WindowNoDecorRounded(WindowNoDecorations):
 
 
 class Window(WindowNoDecorRounded):
-    pass
+    def final_init(self) -> None:
+        super().final_init()
+
+        self.animation = WindowAnimation.OPENING
+        self.should_animate = True
+
+    def update(self, delta: float) -> None:
+        self.handle_animations(delta)
+        return super().update(delta)

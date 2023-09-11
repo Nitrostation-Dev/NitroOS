@@ -25,7 +25,9 @@ class Desktop:
         WindowClass: Window | WindowNoDecorations | WindowNoDecorRounded,
         **window_args
     ) -> None:
-        self.windows.append(WindowClass(len(self.windows), self.assets, **window_args))
+        window = WindowClass(len(self.windows), self.assets, **window_args)
+        window.final_init()
+        self.windows.append(window)
 
     def add_window(self, window: WindowNoDecorations | Window) -> None:
         self.windows.append(window)
@@ -45,9 +47,9 @@ class Desktop:
 
             window.events(Event(event, (mouse_pos_x, mouse_pos_y)))
 
-    def update(self) -> None:
+    def update(self, delta: float) -> None:
         for window in self.windows:
-            window.update()
+            window.update(delta)
 
     def draw(self, output_surface: pygame.Surface) -> None:
         for window in self.windows:
@@ -81,11 +83,11 @@ class DesktopHandler:
 
         self.desktops[self.active_desktop_index].events(event)
 
-    def update(self) -> None:
+    def update(self, delta: float) -> None:
         if len(self.desktops) < 0:
             return
 
-        self.desktops[self.active_desktop_index].update()
+        self.desktops[self.active_desktop_index].update(delta)
 
     def draw(self, output_surface: pygame.Surface) -> None:
         if len(self.desktops) < 0:

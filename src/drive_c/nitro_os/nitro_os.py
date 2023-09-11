@@ -1,6 +1,7 @@
 from json import JSONDecodeError
 import sys
 import os
+import time
 import pygame
 
 from src.drive_c.api.Monitor import Monitor
@@ -66,9 +67,10 @@ class NitroOS:
         desktop_wallpaper.fill((100, 100, 100))
         self.assets.update_assets(
             {
+                # Monitor
                 "monitor_size": self.output_res,
                 "fps": self.output_fps,
-                "login_details": login_details,
+                # Ui
                 "interface_font_size": 20,
                 "interface_font_family_regular": pygame.font.Font(
                     "src/drive_c/assets/fonts/Ubuntu-Regular.ttf", interface_font_size
@@ -80,6 +82,9 @@ class NitroOS:
                     "src/drive_c/assets/fonts/Ubuntu-Bold.ttf", interface_font_size
                 ),
                 "interface_text_fg_color": (0, 0, 0),
+                # Login
+                "login_details": login_details,
+                # Wallpapers
                 "login_wallpaper": pygame.transform.scale(
                     pygame.image.load(
                         "src/drive_c/assets/wallpapers/unsplash-login.jpg"
@@ -87,20 +92,23 @@ class NitroOS:
                     self.output_res,
                 ),
                 "desktop_wallpaper": desktop_wallpaper,
+                # Taskbar
                 "taskbar_height": 40,
                 "taskbar_border_radius": 8,
                 "taskbar_margin": (2, 2),
                 "taskbar_bg_color": (180, 180, 235),
                 "taskbar_transparency": 225,
+                # Handle Installed Apps
                 "apps": self.system_apps_data,
                 "launch_app": self.launch_app,
+                # Icons
                 "icons": self.icons,
                 "get_icon": self.get_icon_for_app,
+                # Windows
+                "window_opening_initial_velocity": 7500,
             }
         )
         self.user_assets.update_assets(self.assets.get_assets())
-
-        self.get_icon_for_app("files")
 
         # Desktops
         self.desktop_handler = DesktopHandler()
@@ -112,6 +120,9 @@ class NitroOS:
                 self.update_current_user,
             )
         )
+
+        # System Resources
+        self.prev_time = time.time()
 
     def get_icon_for_app(self, name: str) -> pygame.Surface:
         for icon in self.icons["applications"]:
@@ -171,7 +182,11 @@ class NitroOS:
             self.desktop_handler.events(event)
 
     def update(self) -> None:
-        self.desktop_handler.update()
+        current_time = time.time()
+        delta = current_time - self.prev_time
+        self.prev_time = time.time()
+
+        self.desktop_handler.update(delta)
 
     def draw(self) -> None:
         self.desktop_handler.draw(self.monitor.output_surface)
